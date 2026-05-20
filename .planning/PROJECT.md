@@ -8,6 +8,14 @@ Un hub web (PWA mobile-first) donde grupos de amigos de 3–15 personas organiza
 
 Que cualquier persona del grupo pueda **encontrar lo importante** (reserva, código, link, decisión) y **cerrar decisiones** del plan sin pelear con el chat — un solo lugar al que volver, no cinco apps.
 
+## Wedge (Positioning)
+
+- **Headline:** Findability — *"Nunca más pierdas la reserva en el chat del grupo."* El lugar donde la info importante no se pierde, no "otra app de planning de viajes".
+- **Proof:** Day-of mode — la vista optimizada para el momento del evento (esenciales al frente, mobile-first, funciona aunque el wifi falle) es lo que hace creíble el headline.
+- **GTM:** Spanish-first / LATAM — lanzar primero en español apuntando a grupos de amigos en LATAM (viajes, festivales, despedidas) antes de competir en inglés contra TripIt/Heya/Wanderlog.
+
+El wedge prioriza orden de construcción y copy, no recorta features: el itinerario, mapa, votos y notas siguen siendo v1, pero la búsqueda global y el "pin de esenciales" son hero features, no "nice to have".
+
 ## Requirements
 
 ### Validated
@@ -70,7 +78,8 @@ Que cualquier persona del grupo pueda **encontrar lo importante** (reserva, cód
 | Onboarding híbrido: ver con link sin cuenta, editar con OAuth | Cero fricción para consulta (clave para adopción grupal); fricción aceptable solo para acciones con consecuencias | — Pending |
 | Gestión de gastos fuera de v1 | Es un producto completo en sí mismo; meterlo diluye el foco del core. Roadmap v2 confirmado. | — Pending |
 | PWA mobile-first sobre un dominio web público (no apps nativas) | Side project con ambición de marketing → un solo deploy sirve app + landing; PWA cubre uso on-the-go | — Pending — validar en research |
-| Stack delegado a research | Sin preferencia del creador; mejor decidirlo con investigación contextual | — Pending |
+| Stack delegado a research | Sin preferencia del creador; mejor decidirlo con investigación contextual | ✓ Resuelto — Next.js 15.5 + Supabase + MapLibre + shadcn (ver research/STACK.md) |
+| Wedge: Findability + Day-of + Spanish-first | 4 researchers convergieron; mercado bimodal deja vacante el momento on-trip; "todo-en-uno" es anti-wedge de 8+ competidores muertos; LATAM underserved | ✓ Locked en research/SUMMARY.md |
 
 ## Evolution
 
