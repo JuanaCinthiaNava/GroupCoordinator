@@ -26,7 +26,7 @@ progress:
 
 - **Phase:** 1 of 7 — Spine & Plan Lifecycle
 - **Plan:** Not started (awaiting `/gsd:plan-phase 1`)
-- **Status:** Roadmap complete, ready for phase planning
+- **Status:** Phase 1 context gathered; ready for phase planning
 - **Progress:** `[░░░░░░░░░░░░░░░░░░░░] 0/7 phases (0%)`
 
 ## Roadmap Snapshot
@@ -82,10 +82,11 @@ progress:
 
 ### Todos / Open Questions (carry into planning)
 
-- Drizzle vs Prisma 7 — lock during Phase 1 planning (Drizzle recommended)
+- ~~Drizzle vs Prisma 7~~ — **Locked: Drizzle ORM 0.36+** (Phase 1 context decision D-15)
 - Realtime in v1: NO by default — polling first, layered Realtime opt-in per surface in Phase 4 (votes) and Phase 2 (itinerary) if budget allows
 - i18n: scaffold next-intl from day 1 (Phase 1) but only ship Spanish catalog; en/pt stubs in Phase 7
 - PWA install timing: end of v1 (Phase 7); browser-tab UX is primary throughout
+- **AUTH-03 (Apple OAuth) deferred out of v1** — Google OAuth only ships in Phase 1; magic-link contingency for iOS deferred to Phase 7 (data-driven trigger). REQUIREMENTS.md needs update to move AUTH-03 to v2 or Out of Scope.
 
 ### Blockers
 
@@ -93,14 +94,18 @@ None.
 
 ## Session Continuity
 
-**Last action:** Roadmap created from PROJECT.md + REQUIREMENTS.md + research/ context
+**Last action:** Phase 1 context gathered via `/gsd:discuss-phase 1` (4 areas covered: tokens, plan create + empty state, OAuth upgrade UX, ORM + Apple OAuth timing)
 **Next action:** Run `/gsd:plan-phase 1` to plan the Spine & Plan Lifecycle phase
+**Resume file:** `.planning/phases/01-spine-plan-lifecycle/01-CONTEXT.md`
+
 **Files of record:**
 
 - `.planning/PROJECT.md`
-- `.planning/REQUIREMENTS.md`
+- `.planning/REQUIREMENTS.md` *(needs AUTH-03 update — see Phase 1 deferred ideas)*
 - `.planning/ROADMAP.md`
 - `.planning/STATE.md`
+- `.planning/phases/01-spine-plan-lifecycle/01-CONTEXT.md` *(new)*
+- `.planning/phases/01-spine-plan-lifecycle/01-DISCUSSION-LOG.md` *(new)*
 - `.planning/research/SUMMARY.md`
 - `.planning/research/STACK.md`
 - `.planning/research/ARCHITECTURE.md`
@@ -110,3 +115,4 @@ None.
 
 ---
 *State initialized: 2026-05-20*
+*Last updated: 2026-05-22 after Phase 1 discuss-phase*
