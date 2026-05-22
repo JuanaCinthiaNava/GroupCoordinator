@@ -12,10 +12,11 @@ Requirements para el lanzamiento inicial. Cada uno mapea a una fase del roadmap.
 
 - [ ] **AUTH-01**: Usuario puede ver un plan compartido por link de invitación sin crear cuenta (sesión anónima)
 - [ ] **AUTH-02**: Usuario puede iniciar sesión con Google OAuth
-- [ ] **AUTH-03**: Usuario puede iniciar sesión con Apple OAuth
 - [ ] **AUTH-04**: Una sesión anónima existente se "upgradea" a cuenta autenticada al hacer login (no se pierde el contexto del plan en el que está)
 - [ ] **AUTH-05**: La sesión de usuario persiste entre refreshes del navegador
 - [ ] **AUTH-06**: Cualquier acción que modifica datos (editar, votar, agregar) requiere cuenta autenticada con redirect transparente al login
+
+> **AUTH-03 (Apple OAuth) deferred to v2** — Decided during Phase 1 discuss-phase (2026-05-22). Magic-link email auth is the iOS contingency, deferred to Phase 7 polish if telemetry shows iOS dropoff. See `.planning/phases/01-spine-plan-lifecycle/01-CONTEXT.md` D-16, D-17.
 
 ### Plan Lifecycle (PLAN)
 
@@ -97,6 +98,10 @@ Requirements para el lanzamiento inicial. Cada uno mapea a una fase del roadmap.
 
 Diferidas conscientemente al siguiente milestone.
 
+### Authentication v2 (AUTH-v2)
+
+- **AUTH-03**: Usuario puede iniciar sesión con Apple OAuth — *Deferred from v1 during Phase 1 discuss-phase (2026-05-22). Requires Apple Developer account ($99/yr) + 6-month secret rotation. Magic-link email is the v1 iOS contingency (Phase 7 if needed).*
+
 ### Expense Splitting (EXP)
 
 - **EXP-01**: Usuario autenticado puede registrar un gasto (quién pagó, monto, descripción)
@@ -147,68 +152,69 @@ Excluido explícitamente. Documentado para prevenir scope creep.
 
 ## Traceability
 
-Mapeo de requirements a fases. Se completa durante la creación del roadmap.
+Mapeo de requirements a fases. Completado al crear el roadmap.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01 | TBD | Pending |
-| AUTH-02 | TBD | Pending |
-| AUTH-03 | TBD | Pending |
-| AUTH-04 | TBD | Pending |
-| AUTH-05 | TBD | Pending |
-| AUTH-06 | TBD | Pending |
-| PLAN-01 | TBD | Pending |
-| PLAN-02 | TBD | Pending |
-| PLAN-03 | TBD | Pending |
-| PLAN-04 | TBD | Pending |
-| PLAN-05 | TBD | Pending |
-| PLAN-06 | TBD | Pending |
-| ITIN-01 | TBD | Pending |
-| ITIN-02 | TBD | Pending |
-| ITIN-03 | TBD | Pending |
-| ITIN-04 | TBD | Pending |
-| ITIN-05 | TBD | Pending |
-| MAP-01 | TBD | Pending |
-| MAP-02 | TBD | Pending |
-| MAP-03 | TBD | Pending |
-| MAP-04 | TBD | Pending |
-| MAP-05 | TBD | Pending |
-| VOTE-01 | TBD | Pending |
-| VOTE-02 | TBD | Pending |
-| VOTE-03 | TBD | Pending |
-| VOTE-04 | TBD | Pending |
-| VOTE-05 | TBD | Pending |
-| VOTE-06 | TBD | Pending |
-| NOTE-01 | TBD | Pending |
-| NOTE-02 | TBD | Pending |
-| NOTE-03 | TBD | Pending |
-| NOTE-04 | TBD | Pending |
-| NOTE-05 | TBD | Pending |
-| FIND-01 | TBD | Pending |
-| FIND-02 | TBD | Pending |
-| FIND-03 | TBD | Pending |
-| FIND-04 | TBD | Pending |
-| FIND-05 | TBD | Pending |
-| FIND-06 | TBD | Pending |
-| FIND-07 | TBD | Pending |
-| VIRAL-01 | TBD | Pending |
-| DAYOF-01 | TBD | Pending |
-| DAYOF-02 | TBD | Pending |
-| DAYOF-03 | TBD | Pending |
-| DAYOF-04 | TBD | Pending |
-| I18N-01 | TBD | Pending |
-| I18N-02 | TBD | Pending |
-| I18N-03 | TBD | Pending |
-| LAND-01 | TBD | Pending |
-| LAND-02 | TBD | Pending |
-| LAND-03 | TBD | Pending |
-| LAND-04 | TBD | Pending |
+| AUTH-01 | Phase 1 | Pending |
+| AUTH-02 | Phase 1 | Pending |
+| AUTH-03 | v2 | Deferred (2026-05-22) |
+| AUTH-04 | Phase 1 | Pending |
+| AUTH-05 | Phase 1 | Pending |
+| AUTH-06 | Phase 1 | Pending |
+| PLAN-01 | Phase 1 | Pending |
+| PLAN-02 | Phase 1 | Pending |
+| PLAN-03 | Phase 1 | Pending |
+| PLAN-04 | Phase 1 | Pending |
+| PLAN-05 | Phase 1 | Pending |
+| PLAN-06 | Phase 1 | Pending |
+| ITIN-01 | Phase 2 | Pending |
+| ITIN-02 | Phase 2 | Pending |
+| ITIN-03 | Phase 2 | Pending |
+| ITIN-04 | Phase 2 | Pending |
+| ITIN-05 | Phase 2 | Pending |
+| MAP-01 | Phase 3 | Pending |
+| MAP-02 | Phase 3 | Pending |
+| MAP-03 | Phase 3 | Pending |
+| MAP-04 | Phase 3 | Pending |
+| MAP-05 | Phase 3 | Pending |
+| VOTE-01 | Phase 4 | Pending |
+| VOTE-02 | Phase 4 | Pending |
+| VOTE-03 | Phase 4 | Pending |
+| VOTE-04 | Phase 4 | Pending |
+| VOTE-05 | Phase 4 | Pending |
+| VOTE-06 | Phase 4 | Pending |
+| NOTE-01 | Phase 5 | Pending |
+| NOTE-02 | Phase 5 | Pending |
+| NOTE-03 | Phase 5 | Pending |
+| NOTE-04 | Phase 5 | Pending |
+| NOTE-05 | Phase 5 | Pending |
+| FIND-01 | Phase 6 | Pending |
+| FIND-02 | Phase 6 | Pending |
+| FIND-03 | Phase 6 | Pending |
+| FIND-04 | Phase 6 | Pending |
+| FIND-05 | Phase 6 | Pending |
+| FIND-06 | Phase 6 | Pending |
+| FIND-07 | Phase 6 | Pending |
+| VIRAL-01 | Phase 5 | Pending |
+| DAYOF-01 | Phase 7 | Pending |
+| DAYOF-02 | Phase 7 | Pending |
+| DAYOF-03 | Phase 7 | Pending |
+| DAYOF-04 | Phase 7 | Pending |
+| I18N-01 | Phase 7 | Pending |
+| I18N-02 | Phase 7 | Pending |
+| I18N-03 | Phase 7 | Pending |
+| LAND-01 | Phase 7 | Pending |
+| LAND-02 | Phase 7 | Pending |
+| LAND-03 | Phase 7 | Pending |
+| LAND-04 | Phase 7 | Pending |
 
 **Coverage:**
-- v1 requirements: 51 total
-- Mapped to phases: 0 (pending roadmap)
-- Unmapped: 51 ⚠️ (resolved at roadmap creation)
+- v1 requirements: 51 total (52 original minus AUTH-03 deferred to v2)
+- Mapped to phases: 51 (100%)
+- Unmapped: 0 ✓
+- Deferred to v2: AUTH-03 (Apple OAuth)
 
 ---
 *Requirements defined: 2026-05-20*
-*Last updated: 2026-05-20 after initial definition*
+*Last updated: 2026-05-22 after Phase 1 discuss-phase (AUTH-03 deferred to v2)*
