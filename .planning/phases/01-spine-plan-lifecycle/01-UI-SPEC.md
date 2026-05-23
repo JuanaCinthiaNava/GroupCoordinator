@@ -50,22 +50,24 @@ created: 2026-05-22
 | `--color-accent` | `#047857` | `emerald-700` | Accent — see reserved-for list below |
 | `--color-accent-hover` | `#065f46` | `emerald-800` | Accent hover state |
 | `--color-accent-foreground` | `#ffffff` | `white` | Text on accent backgrounds |
-| `--color-accent-subtle` | `#d1fae5` | `emerald-100` | Accent tint for focus rings, active row highlights |
+| `--color-accent-subtle` | `#d1fae5` | `emerald-100` | Accent tint for active row highlights |
 | `--color-destructive` | `#dc2626` | `red-600` | Destructive actions only (revoke, delete) |
 | `--color-destructive-foreground` | `#ffffff` | `white` | Text on destructive backgrounds |
 | `--color-destructive-subtle` | `#fee2e2` | `red-100` | Destructive tint for confirmation zones |
-| `--color-ring` | `#047857` | `emerald-700` | Focus ring color — all focusable elements |
+| `--color-ring` | `#059669` | `emerald-600` | Focus ring color — all focusable elements (distinct from accent) |
 
 **Accent (`#047857`) reserved for — explicit, exhaustive list:**
 1. Primary CTA buttons (filled variant)
-2. Focus rings (via `--color-ring`) on all focusable elements
-3. Active/selected link state in navigation (underline or left-border indicator)
-4. Active plan link in "My plans" list (left-border accent treatment)
-5. OG share preview gradient base (via `next/og` route)
-6. "Continuar con Google" button in sign-in bottom sheet
-7. Checkmarks and radio-selected states in forms
+2. Active/selected link state in navigation (underline or left-border indicator)
+3. Active plan link in "My plans" list (left-border accent treatment)
+4. OG share preview gradient base (via `next/og` route)
+5. "Continuar con Google" button in sign-in bottom sheet
+6. Checkmarks and radio-selected states in forms
+7. Success-state highlights and brand-presence moments
 
-Accent is NOT used on: decorative elements, secondary buttons, hover states for non-primary actions, body text, borders (except active-state borders), icons in default state.
+Accent is NOT used on: focus rings (use `--color-ring` = emerald-600), decorative elements, secondary buttons, hover states for non-primary actions, body text, borders (except active-state borders), icons in default state.
+
+**Focus ring rule:** `--color-ring` (`emerald-600 #059669`) is the ring color applied to all focusable elements via `ring-2 ring-[#059669] ring-offset-2`. It is in the same brand family as the accent but is a distinct token value — acceptable on every interactive element without diluting the accent.
 
 **60 / 30 / 10 split:**
 - 60% dominant: `zinc-50` page background + `white` card interiors
@@ -85,22 +87,21 @@ const geistMono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono'
 
 CSS variable names: `--font-geist-sans`, `--font-geist-mono`
 
-**Type scale — 4 sizes declared:**
+**Type scale — 4 sizes (14/16/20/24):**
 
 | Role | Size | Weight | Line height | Font | Usage |
 |------|------|--------|-------------|------|-------|
 | `text-body` | 16px / `text-base` | 400 regular | 1.5 (24px) | Geist Sans | Body copy, list items, form fields, descriptions |
-| `text-small` | 14px / `text-sm` | 400 regular | 1.45 (20px) | Geist Sans | Labels, helper text, badges, timestamps, meta |
-| `text-micro` | 12px / `text-xs` | 400 regular | 1.4 (17px) | Geist Sans | Fine print, placeholder in full-width inputs only, use-count in token rows |
+| `text-small` | 14px / `text-sm` | 400 regular | 1.45 (20px) | Geist Sans | Labels, helper text, badges, timestamps, meta, fine print, placeholder in full-width inputs, use-count in token rows |
 | `text-heading` | 20px / `text-xl` | 600 semibold | 1.25 (25px) | Geist Sans | Section headings, plan title in header, sheet titles |
 | `text-display` | 24px / `text-2xl` | 600 semibold | 1.2 (29px) | Geist Sans | Page-level headings (plan title on plan view hero), dialog titles |
-| `text-mono` | 14px / `text-sm` | 400 regular | 1.45 | Geist Mono | Token values, copyable invite links, code snippets |
+| `text-mono` | 14px / `text-sm` | 400 regular | 1.45 | Geist Mono | Token values, copyable invite links, code snippets (shares 14px size with `text-small`; font-family variant only) |
 
 **Weight rule: exactly 2 weights in Phase 1.** Regular (400) for all body and supporting text. Semibold (600) for all headings, dialog titles, button labels, and the wordmark. No bold (700), no medium (500) — keeping the system clean before Phase 7 polish.
 
 **Line height rule:** body 1.5, headings 1.2–1.25, small/meta 1.4–1.45.
 
-**Minimum accessible text size:** 12px (`text-xs`). Never below 12px for any user-visible string.
+**Minimum accessible text size:** 14px (`text-sm`). Never below 14px for any user-visible string.
 
 ---
 
@@ -114,10 +115,11 @@ Based on 4-point grid. Tailwind utilities listed as implementation reference.
 | `space-2` | 8px | `p-2`, `gap-2` | Compact button padding (icon-only), chip internal padding |
 | `space-3` | 12px | `p-3`, `gap-3` | Small card header internal spacing |
 | `space-4` | 16px | `p-4`, `gap-4` | Default card padding (mobile), mobile body horizontal padding `px-4`, form field internal padding |
-| `space-5` | 20px | `p-5`, `gap-5` | (reserved — use space-4 or space-6, avoid the middle) |
 | `space-6` | 24px | `p-6`, `gap-6` | Section vertical rhythm `space-y-6`, dialog/sheet padding on tablet+, form section gaps |
 | `space-8` | 32px | `p-8`, `gap-8` | Page-level top/bottom padding, major section breaks |
 | `space-12` | 48px | `p-12` | Major vertical section separators |
+
+**Reserved / do not use:** `space-5` (20px) is not part of the active scale. Skip from `space-4` to `space-6` — using 20px creates an off-grid value that breaks the 8-point rhythm.
 
 **Touch target minimum:** 44px height on all interactive elements (buttons, list rows, token rows) — iOS touch target compliance (HP-4 mitigation).
 
@@ -239,7 +241,7 @@ Phase 2 note for planner: when itinerary, map, votes, notes sub-routes are added
 
 - **Bottom sheets** (`<Sheet side="bottom">`): used for sign-in entry (D-10), any mobile-first complex action. Max-height 85vh. Drag handle visible (4px × 32px pill, zinc-300, centered at top). `rounded-t-lg` on the container.
 - **Dialogs** (`<Dialog>`): used for share link (D-07), archive/delete confirmations. Max-width 480px on mobile (full-width minus `mx-4`), 512px on desktop. `rounded-lg`. Backdrop: `bg-zinc-950/60` (60% opacity black).
-- **Inline confirm**: destructive actions in token rows use inline expand-to-confirm pattern (Gmail-style), NOT a modal. Row expands to show "¿Seguro? [Revocar] [Cancelar]" in-place.
+- **Inline confirm**: destructive actions in token rows use inline expand-to-confirm pattern (Gmail-style), NOT a modal. Row expands to show "¿Seguro? [Revocar link] [Cancelar]" in-place.
 
 ### Marketing Skeleton (`(marketing)` route group)
 
@@ -249,7 +251,7 @@ Phase 1 marketing skeleton:
 - Single page with centered layout
 - `<Logo size="lg" />` centered
 - Tagline: "Nunca más pierdas la reserva en el chat del grupo." — `text-display` (24px semibold)
-- Single CTA: "Crear un plan" → `/plan/new` (or triggers sign-in flow if unauthenticated) — primary button, emerald
+- Single CTA: "Crear un plan gratis" → `/plan/new` (or triggers sign-in flow if unauthenticated) — primary button, emerald
 - Footer: minimal, "GroupCoordinator · 2026"
 - No images, no illustrations, no sections beyond the above
 
@@ -291,7 +293,7 @@ Phase 1 marketing skeleton:
 - `<Input>` shadcn, `rounded-md`, `text-base` (16px), full-width
 - Label: "Título del plan" — `text-sm` semibold, zinc-950
 - Placeholder: "Ej: Despedida de Carlos en Cádiz"
-- Focus ring: `ring-2 ring-emerald-700`
+- Focus ring: `ring-2 ring-[#059669]` (using `--color-ring`)
 
 **Collapsible trigger:**
 - "Agregar fechas y descripción" — `text-sm`, zinc-600, with chevron-right icon (lucide) that rotates 90° when open
@@ -300,13 +302,13 @@ Phase 1 marketing skeleton:
 **Fecha de inicio / fin:**
 - `<Input type="date">` — native date picker; no custom calendar widget in Phase 1
 - Labels: "Fecha de inicio" / "Fecha de fin" — `text-sm`, zinc-950
-- Helper: "Opcional" — `text-xs`, zinc-500
+- Helper: "Opcional" — `text-small` (14px), zinc-500
 
 **Descripción:**
 - `<textarea>` (via shadcn `<Textarea>`), 3 rows default, `resize-none`
 - Label: "Descripción" — `text-sm`, zinc-950
 - Placeholder: "Cuéntale al grupo de qué va este plan..."
-- Helper: "Opcional" — `text-xs`, zinc-500
+- Helper: "Opcional" — `text-small` (14px), zinc-500
 
 ### Responsive
 
@@ -342,7 +344,7 @@ Implements D-07. Opens automatically after `createPlan` server action succeeds.
     [Visible only when Web Share API available (navigator.share exists)]
   [Secondary CTA: "Copiar link" — full-width, outline button]
     [Visible always as fallback]
-  [Per-channel hint — text-xs, zinc-500, mt-2]
+  [Per-channel hint — text-small (14px), zinc-500, mt-2]
     "Pega este link en WhatsApp, iMessage, Telegram o donde prefieras."
   [Divider]
   [Footer action: "Ir al plan" — text link, text-sm, zinc-600]
@@ -385,8 +387,8 @@ Implements AUTH-01, PLAN-03, D-08. CP-1 and CP-4 mitigation surface.
 
 [Plan hero — below header]
   [Plan title — text-display (24px, semibold), zinc-950, px-4 pt-6]
-  [Date range — if set: "15 jun – 20 jun 2026", text-sm, zinc-500, mt-1 px-4]
-  [Creator row — Avatar (32px) + "Creado por [Nombre]", text-sm, zinc-600, mt-3 px-4]
+  [Date range — if set: "15 jun – 20 jun 2026", text-small (14px), zinc-500, mt-1 px-4]
+  [Creator row — Avatar (32px) + "Creado por [Nombre]", text-small (14px), zinc-600, mt-3 px-4]
   [Divider]
 
 [Member list section — px-4]
@@ -398,16 +400,16 @@ Implements AUTH-01, PLAN-03, D-08. CP-1 and CP-4 mitigation surface.
   [Centered vertically within remaining viewport, px-4]
   [Illustration: none — avoid fake placeholder chrome (CP-4)]
   [Copy: "{Creator} sigue agregando detalles. Vuelve pronto." — text-body, zinc-500, text-center]
-  [Sub-copy: "Cuando el plan esté listo, lo verás aquí." — text-sm, zinc-400, text-center mt-2]
+  [Sub-copy: "Cuando el plan esté listo, lo verás aquí." — text-small (14px), zinc-400, text-center mt-2]
 
 [Sign-in affordance — bottom of viewport, sticky on mobile]
   [Bar: bg-white border-t border-zinc-200, px-4 py-3, shadow-md]
-  [Copy: "Inicia sesión para editar y votar" — text-sm, zinc-600]
+  [Copy: "Inicia sesión para editar y votar" — text-small (14px), zinc-600]
   [Button: "Continuar con Google" — emerald filled, 44px height, rounded-md, full-width]
   [Clicking triggers sign-in bottom sheet (Surface 5)]
 
 [Footer — below content, NOT in bottom bar]
-  ["Powered by GroupCoordinator" — text-xs, zinc-400, text-center py-4]
+  ["Powered by GroupCoordinator" — text-small (14px), zinc-400, text-center py-4]
   [Virality mechanic per MP-5]
 ```
 
@@ -482,10 +484,10 @@ Implements D-10. Triggered by "Iniciar sesión" header link or the sticky sign-i
       [Left: Google logo SVG (20px) | Center: "Continuar con Google" semibold 16px]
     [Spacer: mt-4]
     [Privacy line: "Al continuar aceptas nuestros Términos de uso y Política de privacidad."
-      — text-xs, zinc-400, text-center]
+      — text-small (14px), zinc-400, text-center]
       ["Términos de uso" and "Política de privacidad" are text links, zinc-500, underline]
     [Spacer: mt-3]
-    [Cancel link: "Seguir como visitante" — text-sm, zinc-500, text-center, tap closes sheet]
+    [Cancel link: "Seguir como visitante" — text-small (14px), zinc-500, text-center, tap closes sheet]
 [/Sheet]
 ```
 
@@ -534,11 +536,11 @@ Owner-only. Gate: redirect to `/plan/[slug]` if `user.id !== plan.owner_id`.
   [Token row list — space-y-3]
     [Each token row — card, p-4, rounded-lg, shadow-sm]
       [Row header: link name (editable inline), text-body semibold, zinc-950]
-      [Row meta: "Creado: [date] · Usado [N] veces", text-xs, zinc-500]
-      [Row actions: "Revocar" — text-sm, text-red-600, tap triggers inline confirm]
+      [Row meta: "Creado: [date] · Usado [N] veces", text-small (14px), zinc-500]
+      [Row actions: "Revocar link" — text-small (14px), text-red-600, tap triggers inline confirm]
       [Inline confirm (expanded state):]
-        ["¿Revocar este link? Los visitantes actuales pueden seguir viendo el plan." — text-sm zinc-600]
-        [Buttons: "Revocar" (destructive, red filled) | "Cancelar" (ghost)]
+        ["¿Revocar este link? Los visitantes actuales pueden seguir viendo el plan." — text-small (14px) zinc-600]
+        [Buttons: "Revocar link" (destructive, red filled) | "Cancelar" (ghost)]
 
 [Section: "Estado del plan"]
   [Archive button: "Archivar plan" — destructive outline, full-width]
@@ -553,7 +555,7 @@ Owner-only. Gate: redirect to `/plan/[slug]` if `user.id !== plan.owner_id`.
 
 | State | Behavior |
 |-------|----------|
-| Default | Name + meta + "Revocar" link visible |
+| Default | Name + meta + "Revocar link" action visible |
 | Editing name (tap name) | Name becomes inline `<input>`, confirm on blur or Enter |
 | Confirm-revoke expanded | Row expands inline with confirmation UI |
 | Revoked | Row removed from list with 200ms fade-out after API call |
@@ -563,7 +565,7 @@ Owner-only. Gate: redirect to `/plan/[slug]` if `user.id !== plan.owner_id`.
 
 - Section headings: `<h2>` for each settings section
 - Token rows: `<ul>` with `<li>` per token; `role="list"`
-- "Revocar" button: `aria-label="Revocar link {name}"` to distinguish multiple rows
+- "Revocar link" button: `aria-label="Revocar link {name}"` to distinguish multiple rows
 - Inline confirm: `role="alert"` or `aria-live="assertive"` on expansion for screen readers
 - Destructive dialog: focus moves to "Cancelar" by default (safe default) not "Archivar"
 
@@ -589,21 +591,22 @@ Implements PLAN-06. Auth-required. Redirect to sign-in if unauthenticated.
 [Page heading: "Mis planes" — text-display (24px semibold), zinc-950]
 
 [Create CTA — sticky below heading or at top of list]
-  ["+ Nuevo plan" — primary button, emerald, full-width on 375px, max-width 200px on 768px+]
+  ["Crear plan" — primary button, emerald, full-width on 375px, max-width 200px on 768px+]
+  [The "+" glyph is kept as decoration to the left of the label]
 
 [Plan list — space-y-3]
   [Each plan card — card, p-4, rounded-lg, shadow-sm, bg-white]
     [Plan title — text-heading (20px semibold), zinc-950, 2-line clamp]
-    [Date range — if set: text-sm, zinc-500, mt-1]
-    [Member count — "N participantes", text-sm, zinc-500, with lucide Users icon (14px)]
-    [Updated timestamp — "Actualizado [date]", text-xs, zinc-400, mt-2]
-    [Role indicator — owner: "Organizador" badge (bg-zinc-100, text-xs, zinc-600); member: no badge]
+    [Date range — if set: text-small (14px), zinc-500, mt-1]
+    [Member count — "N participantes", text-small (14px), zinc-500, with lucide Users icon (14px)]
+    [Updated timestamp — "Actualizado [date]", text-small (14px), zinc-400, mt-2]
+    [Role indicator — owner: "Organizador" badge (bg-zinc-100, text-small (14px), zinc-600); member: no badge]
     [Active link indicator — if has active invite token: lucide Link icon (14px), zinc-400]
   [Card is fully tappable, tap navigates to /plan/[slug]]
 
 [Empty state — if user has no plans]
   [Copy: "Todavía no tienes ningún plan." — text-body, zinc-500, text-center, mt-12]
-  [Sub-copy: "Crea uno y compártelo con tu grupo." — text-sm, zinc-400, text-center, mt-2]
+  [Sub-copy: "Crea uno y compártelo con tu grupo." — text-small (14px), zinc-400, text-center, mt-2]
   [CTA: "Crear mi primer plan" — primary button, emerald, mt-6, mx-auto]
 ```
 
@@ -653,8 +656,10 @@ Phase 1 ships the minimal skeleton only. Full landing (LAND-01..04) is Phase 7.
   [Sub-copy: "Un plan. Un link. Todo el grupo al tanto."
     — text-body (16px), zinc-500, text-center, mt-3, px-4]
   [CTA: "Crear un plan gratis" — primary button, emerald, mt-8, px-8, h-11]
-  [Footer — absolute bottom: "GroupCoordinator · 2026", text-xs, zinc-400]
+  [Footer — absolute bottom: "GroupCoordinator · 2026", text-small (14px), zinc-400]
 ```
+
+**Primary visual anchor:** the "Crear un plan gratis" CTA button. All other elements (logo, tagline, sub-copy, footer) support it visually and in scan order.
 
 OG meta for landing (static):
 - `og:title`: "GroupCoordinator — El plan de tu grupo, sin perderse nada"
@@ -707,7 +712,7 @@ Note: `zinc-500` on `zinc-50` is borderline (4.5:1). Use only for decorative/sup
 
 ### Focus Visible Rule
 
-All focusable elements must have a visible focus ring at all times. No suppression of `:focus-visible`. Standard ring: `ring-2 ring-emerald-700 ring-offset-2`. This applies to: buttons, links, inputs, textareas, selects, checkboxes, sheet drag handles.
+All focusable elements must have a visible focus ring at all times. No suppression of `:focus-visible`. Standard ring: `ring-2 ring-[#059669] ring-offset-2` (using `--color-ring` = emerald-600, distinct from the emerald-700 accent). This applies to: buttons, links, inputs, textareas, selects, checkboxes, sheet drag handles.
 
 ### Keyboard Navigation
 
@@ -833,9 +838,9 @@ All keys are under the namespace structure used by next-intl. Keys map to Spanis
       "token_created": "Creado: {date}",
       "token_used": "Usado {count} veces",
       "token_default_name": "Link {number}",
-      "token_revoke": "Revocar",
+      "token_revoke": "Revocar link",
       "token_revoke_confirm_copy": "¿Revocar este link? Los visitantes actuales pueden seguir viendo el plan.",
-      "token_revoke_confirm_action": "Revocar",
+      "token_revoke_confirm_action": "Revocar link",
       "section_status": "Estado del plan",
       "archive_button": "Archivar plan",
       "archive_dialog_title": "¿Archivar este plan?",
@@ -849,7 +854,7 @@ All keys are under the namespace structure used by next-intl. Keys map to Spanis
   },
   "me": {
     "page_title": "Mis planes",
-    "create_cta": "+ Nuevo plan",
+    "create_cta": "Crear plan",
     "create_first": "Crear mi primer plan",
     "empty_heading": "Todavía no tienes ningún plan.",
     "empty_sub": "Crea uno y compártelo con tu grupo.",
