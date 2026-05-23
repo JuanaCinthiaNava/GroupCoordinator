@@ -339,7 +339,7 @@ Implements D-07. Opens automatically after `createPlan` server action succeeds.
   [Dialog title: "¡Plan creado! Compártelo con el grupo" — text-heading, zinc-950]
   [Invite link block]
     [Link display — font-mono, text-sm, bg-zinc-100, rounded-md, p-3, truncate]
-    [Copy button — icon-only, lucide Copy icon, 36×36px]
+    [Copy button — icon-only, lucide Copy icon, 36×36px, aria-label="Copiar link"]
   [Primary CTA: "Compartir vía..." — full-width, primary button, emerald, lucide Share2 icon]
     [Visible only when Web Share API available (navigator.share exists)]
   [Secondary CTA: "Copiar link" — full-width, outline button]
@@ -369,6 +369,7 @@ Implements D-07. Opens automatically after `createPlan` server action succeeds.
 
 - `<Dialog>` with `aria-labelledby` pointing to dialog title
 - `aria-live="polite"` region for copy confirmation ("¡Link copiado!")
+- Icon-only copy button has `aria-label="Copiar link"` (visible label is provided by the secondary "Copiar link" button below; icon button is a convenience action and needs its own label)
 - Focus on dialog open: first interactive element is the link copy area
 - Escape key closes dialog (shadcn Dialog default behavior)
 - `role="dialog"`, `aria-modal="true"`
