@@ -94,9 +94,17 @@ None.
 
 ## Session Continuity
 
-**Last action:** Phase 1 context gathered via `/gsd:discuss-phase 1` (4 areas covered: tokens, plan create + empty state, OAuth upgrade UX, ORM + Apple OAuth timing)
-**Next action:** Run `/gsd:plan-phase 1` to plan the Spine & Plan Lifecycle phase
-**Resume file:** `.planning/phases/01-spine-plan-lifecycle/01-CONTEXT.md`
+**Last action:** Phase 1 UI design contract approved (`/gsd:ui-phase 1`) — UI-SPEC.md verified 6/6 dimensions PASS after 1 revision iteration
+**Next action:** Run `/gsd:plan-phase 1` to plan the Spine & Plan Lifecycle phase (CONTEXT.md + UI-SPEC.md will both flow into the planner)
+**Resume file:** `.planning/phases/01-spine-plan-lifecycle/01-UI-SPEC.md`
+
+**Phase 1 design tokens locked (UI-SPEC.md):**
+- Accent: emerald-700 `#047857` (sparingly applied); focus ring: emerald-600 `#059669` (distinct)
+- Chrome: zinc-50/100/200/300/500/600/950 (60/30/10 split)
+- Typography: Geist Sans (4 sizes: 14/16/20/24) + Geist Mono 14px; 2 weights (400/600)
+- Radius: rounded-md (6px) inputs/buttons, rounded-lg (8px) cards/dialogs
+- Spacing: 4-point grid (4/8/12/16/24/32/48); space-5 (20px) explicitly reserved
+- 60+ es.json keys defined across 10 namespaces; Spanish-first, neutral tone, 2nd-person "tú"
 
 **Files of record:**
 
@@ -104,8 +112,9 @@ None.
 - `.planning/REQUIREMENTS.md` *(needs AUTH-03 update — see Phase 1 deferred ideas)*
 - `.planning/ROADMAP.md`
 - `.planning/STATE.md`
-- `.planning/phases/01-spine-plan-lifecycle/01-CONTEXT.md` *(new)*
-- `.planning/phases/01-spine-plan-lifecycle/01-DISCUSSION-LOG.md` *(new)*
+- `.planning/phases/01-spine-plan-lifecycle/01-CONTEXT.md`
+- `.planning/phases/01-spine-plan-lifecycle/01-DISCUSSION-LOG.md`
+- `.planning/phases/01-spine-plan-lifecycle/01-UI-SPEC.md` *(new)*
 - `.planning/research/SUMMARY.md`
 - `.planning/research/STACK.md`
 - `.planning/research/ARCHITECTURE.md`
@@ -115,4 +124,4 @@ None.
 
 ---
 *State initialized: 2026-05-20*
-*Last updated: 2026-05-22 after Phase 1 discuss-phase*
+*Last updated: 2026-05-22 after Phase 1 ui-phase (UI-SPEC verified)*
