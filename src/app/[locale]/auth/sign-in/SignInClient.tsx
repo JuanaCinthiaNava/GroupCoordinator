@@ -19,6 +19,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet';
+import { safeNext } from '@/lib/auth/safe-redirect';
 import { getBrowserClient } from '@/lib/supabase/browser';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
@@ -71,11 +72,10 @@ export function SignInClient({ initialError, nextPath }: SignInClientProps) {
     try {
       const supabase = getBrowserClient();
       const origin = typeof window !== 'undefined' ? window.location.origin : '';
-      const safeNext = nextPath.startsWith('/') && !nextPath.startsWith('//') ? nextPath : '/';
       await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${origin}/auth/callback?next=${encodeURIComponent(safeNext)}`,
+          redirectTo: `${origin}/auth/callback?next=${encodeURIComponent(safeNext(nextPath, '/'))}`,
           queryParams: { prompt: 'select_account' },
         },
       });

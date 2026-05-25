@@ -28,6 +28,7 @@
 //
 // D-12: no pending-action replay. D-17: Google only (no magic-link handler here).
 
+import { safeNext } from '@/lib/auth/safe-redirect';
 import { type CookieOptions, createServerClient as createSsrServerClient } from '@supabase/ssr';
 import { createClient as createAdminClient } from '@supabase/supabase-js';
 import { type NextRequest, NextResponse } from 'next/server';
@@ -39,21 +40,6 @@ import {
 
 export { parseCallbackError, upsertPlanMembershipFromAppMeta };
 export type { ParsedCallbackError };
-
-/**
- * Validate that `next` is a safe relative in-app path. Per T-05-01, reject
- * absolute URLs (http://, https://, //), protocol-relative URLs, and any path
- * that does not start with a single '/'. Fallback to '/me' when unsafe.
- */
-function safeNext(raw: string | null): string {
-  if (!raw) return '/me';
-  if (!raw.startsWith('/')) return '/me';
-  // Protocol-relative ('//evil.example/...') — reject.
-  if (raw.startsWith('//')) return '/me';
-  // Embedded scheme — reject (e.g., '/http://evil' is fine but '/:javascript' isn't).
-  if (raw.toLowerCase().startsWith('/javascript:')) return '/me';
-  return raw;
-}
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
   const { searchParams, origin } = new URL(request.url);
