@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+/*
+ * Phase 1 design tokens — UI-SPEC §Design Tokens
+ * - 60/30/10 split: zinc-50 background / zinc-100 surfaces / emerald-700 accent (10%)
+ * - Focus ring: emerald-600 (#059669) distinct from emerald-700 accent
+ * - Geist Sans + Geist Mono via next/font/google CSS variables
+ */
+
+@theme {
+  --color-background: #fafafa;
+  --color-surface: #f4f4f5;
+  --color-foreground: #09090b;
+  --color-muted: #71717a;
+  --color-muted-foreground: #52525b;
+  --color-border: #e4e4e7;
+  --color-border-strong: #d4d4d8;
+
+  --color-accent: #047857;
+  --color-accent-hover: #065f46;
+  --color-accent-foreground: #ffffff;
+  --color-accent-subtle: #d1fae5;
+
+  --color-destructive: #dc2626;
+  --color-destructive-foreground: #ffffff;
+  --color-destructive-subtle: #fee2e2;
+
+  --color-ring: #059669;
+
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), "Geist Mono", ui-monospace, monospace;
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.5;
+    font-weight: 400;
+  }
+
+  /* Focus-visible rule — UI-SPEC §Focus Visible Rule */
+  *:focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}

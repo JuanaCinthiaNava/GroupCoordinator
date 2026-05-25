@@ -1,0 +1,6 @@
+# GroupCoordinator robots policy — D-22
+# Plan pages and invite handlers are private; disallow indexing globally.
+
+User-agent: *
+Disallow: /plan/
+Disallow: /i/

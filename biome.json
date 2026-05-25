@@ -1,0 +1,62 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "organizeImports": { "enabled": true },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "style": {
+        "noNonNullAssertion": "off"
+      },
+      "suspicious": {
+        "noExplicitAny": "warn"
+      },
+      "a11y": {
+        "useKeyWithClickEvents": "off",
+        "noLabelWithoutControl": "off",
+        "useFocusableInteractive": "off",
+        "useAriaPropsForRole": "off",
+        "useSemanticElements": "off",
+        "useHtmlLang": "off"
+      }
+    }
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 100
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "trailingCommas": "es5",
+      "semicolons": "always"
+    }
+  },
+  "files": {
+    "ignore": [
+      ".next/",
+      "node_modules/",
+      "drizzle/migrations/",
+      "supabase/migrations/",
+      "supabase/policies/",
+      "src/lib/i18n/messages/",
+      "playwright-report/",
+      "test-results/",
+      "coverage/"
+    ]
+  },
+  "overrides": [
+    {
+      "include": ["src/app/global-error.tsx"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noExplicitAny": "off"
+          }
+        }
+      }
+    }
+  ]
+}
