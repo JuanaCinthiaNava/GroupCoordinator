@@ -16,6 +16,7 @@
     "db:migrate": "drizzle-kit migrate",
     "db:push": "supabase db push",
     "db:seed": "psql \"$DATABASE_MIGRATION_URL\" -f supabase/seed.sql",
+    "db:reset": "supabase db reset",
     "db:studio": "drizzle-kit studio",
     "supabase": "supabase"
   },
