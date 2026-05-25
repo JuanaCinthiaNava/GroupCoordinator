@@ -52,6 +52,7 @@
       "created_by": "Creado por {name}",
       "members_section": "Participantes ({count})",
       "members_overflow": "+{count} más",
+      "member_chip_aria": "{name}, participante",
       "empty_heading": "{Creator} sigue agregando detalles. Vuelve pronto.",
       "empty_sub": "Cuando el plan esté listo, lo verás aquí.",
       "sign_in_prompt": "Inicia sesión para editar y votar",
@@ -111,7 +112,7 @@
     "plan_not_found_sub": "Pídele al organizador un link actualizado.",
     "token_invalid": "Este link de invitación no es válido.",
     "token_revoked": "Este link fue revocado. Pídele al organizador uno nuevo.",
-    "token_expired": "Este link de invitación expiró.",
+    "token_expired": "Este link expiró. Pídele al organizador uno nuevo.",
     "unauthorized": "Necesitas iniciar sesión para ver esto.",
     "server_error": "Algo salió mal. Inténtalo en un momento.",
     "auth_error": "Hubo un problema al iniciar sesión. Inténtalo de nuevo."

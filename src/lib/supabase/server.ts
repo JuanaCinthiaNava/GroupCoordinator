@@ -9,10 +9,7 @@
 // - The Anon Key (NEXT_PUBLIC_SUPABASE_ANON_KEY) is the public client identity;
 //   RLS is the real gate. Service-role usage is in service-role.ts only.
 
-import {
-  type CookieOptions,
-  createServerClient as createSsrServerClient,
-} from '@supabase/ssr';
+import { type CookieOptions, createServerClient as createSsrServerClient } from '@supabase/ssr';
 import type { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
 
 export function createServerClient(cookieStore: ReadonlyRequestCookies) {
@@ -29,16 +26,18 @@ export function createServerClient(cookieStore: ReadonlyRequestCookies) {
             name: string;
             value: string;
             options?: CookieOptions;
-          }>,
+          }>
         ) {
           try {
             for (const { name, value, options } of cookiesToSet) {
               // The cast widens to mutable cookie store — Next.js types are conservative
               // about Server Component cookie mutation, but middleware/route handlers
               // permit it.
-              (cookieStore as unknown as {
-                set: (n: string, v: string, o?: CookieOptions) => void;
-              }).set(name, value, options);
+              (
+                cookieStore as unknown as {
+                  set: (n: string, v: string, o?: CookieOptions) => void;
+                }
+              ).set(name, value, options);
             }
           } catch {
             // Server Component render context — middleware will set cookies on the
@@ -46,6 +45,6 @@ export function createServerClient(cookieStore: ReadonlyRequestCookies) {
           }
         },
       },
-    },
+    }
   );
 }

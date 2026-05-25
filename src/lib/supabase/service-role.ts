@@ -9,12 +9,12 @@
 // Companion lint hint: this file deliberately has no 'use client' directive
 // and no JSX. It exports a single factory.
 
-import { createClient, type SupabaseClient } from '@supabase/supabase-js';
+import { type SupabaseClient, createClient } from '@supabase/supabase-js';
 
 if (typeof window !== 'undefined') {
   throw new Error(
     'service-role client must not be imported in browser bundles. ' +
-      'See src/lib/supabase/service-role.ts top comment for the contract.',
+      'See src/lib/supabase/service-role.ts top comment for the contract.'
   );
 }
 
@@ -23,7 +23,7 @@ export function createServiceRoleClient(): SupabaseClient {
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!url || !key) {
     throw new Error(
-      'createServiceRoleClient: missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY',
+      'createServiceRoleClient: missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY'
     );
   }
   return createClient(url, key, {

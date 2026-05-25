@@ -15,7 +15,7 @@ export interface MembershipLike {
 
 export function isOwner(
   plan: PlanLike | null | undefined,
-  userId: string | null | undefined,
+  userId: string | null | undefined
 ): boolean {
   if (!plan || !userId) return false;
   return plan.ownerId === userId;
@@ -23,7 +23,7 @@ export function isOwner(
 
 export function isMember(
   memberships: ReadonlyArray<MembershipLike> | null | undefined,
-  planId: string | null | undefined,
+  planId: string | null | undefined
 ): boolean {
   if (!memberships || !planId) return false;
   return memberships.some((m) => m.planId === planId);
