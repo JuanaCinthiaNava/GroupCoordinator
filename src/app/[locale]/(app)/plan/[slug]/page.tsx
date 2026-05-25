@@ -99,7 +99,17 @@ export default async function PlanViewPage({
     data: { user },
   } = await supabase.auth.getUser();
 
-  const plan = await getPlanBySlug(supabase, slug);
+  // T-06-06: getPlanBySlug filters archived_at IS NULL by default. Owners
+  // retain access to archived plans via a second lookup with `allowArchived`,
+  // which is the only path that returns archived rows. Anon and non-owner
+  // authenticated viewers fall through to notFound().
+  let plan = await getPlanBySlug(supabase, slug);
+  if (!plan && user && !user.is_anonymous) {
+    const archivedAttempt = await getPlanBySlug(supabase, slug, { allowArchived: true });
+    if (archivedAttempt && archivedAttempt.owner_id === user.id) {
+      plan = archivedAttempt;
+    }
+  }
   if (!plan) notFound();
 
   const members = await getPlanMembers(supabase, plan.id);

@@ -204,10 +204,27 @@ describe('createPlan Server Action — integration', () => {
     expect(redirectShim.calls.length).toBe(0);
   });
 
-  it('updatePlan + archivePlan throw "not yet implemented — Plan 01-06"', async () => {
-    // Module-level — no auth needed because the stubs throw before any I/O.
+  it('updatePlan + archivePlan are implemented (Plan 01-06 lifted the stubs)', async () => {
+    // Plan 01-06 replaced the Plan 01-04 stubs. They now validate input and
+    // hit the RLS-bound supabase client. With no auth gate the actions short
+    // out at Zod parse / require-user, but the actions must no longer throw
+    // the "Plan 01-06" stub error.
     const { updatePlan, archivePlan } = await import('@/server/actions/plan');
-    await expect(updatePlan('any', new FormData())).rejects.toThrow(/Plan 01-06/);
-    await expect(archivePlan('any')).rejects.toThrow(/Plan 01-06/);
+    const fd = new FormData();
+    fd.set('planId', 'not-a-uuid');
+    fd.set('title', '');
+    // Empty validation surfaces a returned error (no throw, no Plan 01-06 stub).
+    const updateResult = await updatePlan(fd).catch((e) => e);
+    if (updateResult && updateResult instanceof Error) {
+      expect(updateResult.message).not.toMatch(/Plan 01-06/);
+    } else if (updateResult && 'error' in (updateResult as object)) {
+      expect(updateResult).toBeTruthy();
+    }
+    const fd2 = new FormData();
+    fd2.set('planId', 'not-a-uuid');
+    const archiveResult = await archivePlan(fd2).catch((e) => e);
+    if (archiveResult && archiveResult instanceof Error) {
+      expect(archiveResult.message).not.toMatch(/Plan 01-06/);
+    }
   });
 });

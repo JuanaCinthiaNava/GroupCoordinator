@@ -1,9 +1,7 @@
-// Owner-revokes-token E2E — Plan 01-06.
-// Covers requirements: PLAN-04, AUTH-01 negative path.
+// Owner-archives-plan E2E — Plan 01-06.
+// Covers requirement PLAN-05 + T-06-06 mitigation.
 //
-// Uses the password-bypass auth shim already established by my-plans.spec.ts:
-// mint a session via Supabase Admin API, set sb-* cookies on the Playwright
-// context, then exercise the owner UX end-to-end.
+// Uses the same password-bypass auth pattern as token-revoke.spec.ts.
 //
 // Skips cleanly when local Supabase is unreachable.
 
@@ -12,7 +10,7 @@ import { createClient } from '@supabase/supabase-js';
 import fs from 'node:fs';
 import path from 'node:path';
 
-const VALID_TOKEN = 'seedvakjdtpken22charsx';
+const SEED_PLAN_ID = '00000000-0000-0000-0000-000000000001';
 
 function loadEnv() {
   const envPath = path.resolve(process.cwd(), '.env.local');
@@ -119,8 +117,8 @@ async function setSessionCookies(
   ]);
 }
 
-test.describe('Token revocation flow (Plan 01-06)', () => {
-  test('owner revokes seed token; /i/[token] then 302s to /errors/token-revoked', async ({
+test.describe('Plan archive flow (Plan 01-06)', () => {
+  test('owner archives plan; /me hides it; direct URL still resolves for owner; incognito 404s', async ({
     browser,
     request,
   }) => {
@@ -133,8 +131,8 @@ test.describe('Token revocation flow (Plan 01-06)', () => {
     const admin = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
       auth: { persistSession: false, autoRefreshToken: false },
     });
-    // Pre-state: ensure the seed token is not already revoked.
-    await admin.from('invite_tokens').update({ revoked_at: null }).eq('token', VALID_TOKEN);
+    // Pre-state: clear archived_at on the seed plan.
+    await admin.from('plans').update({ archived_at: null }).eq('id', SEED_PLAN_ID);
 
     const session = await mintSessionFor(SEED_OWNER_EMAIL, SEED_OWNER_PASSWORD);
 
@@ -145,33 +143,38 @@ test.describe('Token revocation flow (Plan 01-06)', () => {
     await page.goto('/plan/seed-plan/settings');
     await expect(page.getByRole('heading', { name: 'Configuración' })).toBeVisible();
 
-    // At least one Revocar link button should exist.
-    const revokeButton = page.getByRole('button', { name: 'Revocar link' }).first();
-    await expect(revokeButton).toBeVisible();
-    await revokeButton.click();
+    // Click "Archivar plan" → ArchiveDialog opens.
+    await page.getByRole('button', { name: 'Archivar plan' }).click();
+    await expect(page.getByRole('dialog')).toBeVisible();
+    await expect(page.getByText(/¿Archivar este plan\?/)).toBeVisible();
 
-    // Inline confirm copy appears.
-    await expect(page.getByText(/Revocar este link/)).toBeVisible();
+    // Confirm. archivePlan redirects to /me.
+    await page.getByRole('button', { name: 'Archivar', exact: true }).click();
+    await page.waitForURL(/\/me$/);
 
-    // Click the inline confirm action (matches the destructive button label).
-    await page
-      .getByRole('button', { name: 'Revocar link' })
-      .last() // the inline-confirm button is rendered after the trigger
-      .click();
+    // /me does not list the archived seed plan.
+    await expect(page.getByRole('heading', { name: 'Mis planes' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Plan de prueba/ })).not.toBeVisible();
 
-    // The /i/[token] route in a fresh incognito context should land on the revoked error page.
+    // Direct URL still resolves for the owner.
+    await page.goto('/plan/seed-plan');
+    await expect(page.getByRole('heading', { name: /Plan de prueba/ })).toBeVisible();
+
+    // T-06-06: incognito with no claim → 404 (RLS blocks anon-no-claim).
     const incognito = await browser.newContext();
     const incognitoPage = await incognito.newPage();
-    await incognitoPage.goto(`/i/${VALID_TOKEN}`);
-    await incognitoPage.waitForURL(/\/errors\/token-revoked/);
+    const res = await incognitoPage.goto('/plan/seed-plan');
+    // Next.js returns 200 with the not-found page rendered, OR a 404 depending
+    // on how notFound() is configured. Either way the plan title MUST NOT show.
+    expect(res?.status() ?? 0).toBeGreaterThanOrEqual(200);
     await expect(
-      incognitoPage.getByRole('heading', { name: /Este link fue revocado/ })
-    ).toBeVisible();
+      incognitoPage.getByRole('heading', { name: /Plan de prueba/ })
+    ).not.toBeVisible();
 
     await incognito.close();
     await context.close();
 
-    // Cleanup — restore revoked_at to null.
-    await admin.from('invite_tokens').update({ revoked_at: null }).eq('token', VALID_TOKEN);
+    // Cleanup — restore archived_at to null.
+    await admin.from('plans').update({ archived_at: null }).eq('id', SEED_PLAN_ID);
   });
 });

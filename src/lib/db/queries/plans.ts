@@ -38,16 +38,25 @@ export interface PlanMemberRow {
  * Fetch a single plan by slug. Returns null when the caller cannot see it
  * (either RLS filtered it out, or it does not exist; the two cases are
  * deliberately indistinguishable per defense-in-depth).
+ *
+ * T-06-06 mitigation: archived plans are filtered out by default at the
+ * application layer. Callers that legitimately need archived plans (the
+ * settings page so owners can still reach it, future restore flows) must
+ * explicitly opt in via `{ allowArchived: true }`. RLS still permits
+ * anon-with-claim and members to SELECT archived rows, so this filter is the
+ * load-bearing guard.
  */
 export async function getPlanBySlug(
   supabase: SupabaseClient,
-  slug: string
+  slug: string,
+  options?: { allowArchived?: boolean }
 ): Promise<PlanRow | null> {
-  const { data, error } = await supabase
-    .from('plans')
-    .select('*')
-    .eq('slug', slug)
-    .maybeSingle<PlanRow>();
+  const allowArchived = options?.allowArchived ?? false;
+  let query = supabase.from('plans').select('*').eq('slug', slug);
+  if (!allowArchived) {
+    query = query.is('archived_at', null);
+  }
+  const { data, error } = await query.maybeSingle<PlanRow>();
   if (error) throw error;
   return data ?? null;
 }

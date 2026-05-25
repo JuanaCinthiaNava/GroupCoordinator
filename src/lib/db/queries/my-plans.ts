@@ -40,10 +40,7 @@ interface RawPlanRow {
  * Fetch the user's plans (owner or member). Returns ordered by
  * updated_at DESC (PLAN-06). RLS filters automatically.
  */
-export async function getMyPlans(
-  supabase: SupabaseClient,
-  userId: string
-): Promise<MyPlansRow[]> {
+export async function getMyPlans(supabase: SupabaseClient, userId: string): Promise<MyPlansRow[]> {
   // Two separate queries because Supabase JS does not express UNION ergonomically:
   //   (a) plans the user owns
   //   (b) plans the user is a member of (via plan_members FK)

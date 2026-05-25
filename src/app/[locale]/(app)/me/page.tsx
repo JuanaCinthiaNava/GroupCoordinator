@@ -8,8 +8,8 @@
 // as /plan/[slug]. The (app) layout no longer mounts the header — each page
 // owns its own (Plan 01-04 convention).
 
-import { PlanHeader } from '@/components/plan/PlanHeader';
 import { MyPlansList } from '@/components/me/MyPlansList';
+import { PlanHeader } from '@/components/plan/PlanHeader';
 import { getRequiredUser } from '@/lib/auth/require-user';
 import { getMyPlans } from '@/lib/db/queries/my-plans';
 import { createServerClient } from '@/lib/supabase/server';

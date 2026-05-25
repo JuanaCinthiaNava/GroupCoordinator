@@ -75,6 +75,11 @@ export const inviteTokens = pgTable('invite_tokens', {
     .notNull()
     .references(() => plans.id, { onDelete: 'cascade' }),
   token: text('token').notNull().unique(), // 22-char nanoid, no-lookalike alphabet
+  // Optional display name shown in /plan/[slug]/settings. Plan 01-06 adds this.
+  // When null, the UI computes a default of `Link {N}` from the row's
+  // reverse-chronological position. The existing invite_tokens_update_owner
+  // policy covers updates to this column.
+  name: text('name'),
   role: planMemberRoleEnum('role').notNull().default('viewer'),
   expiresAt: timestamp('expires_at', { withTimezone: true }),
   // Soft-delete (revoke). No hard delete — audit trail.
