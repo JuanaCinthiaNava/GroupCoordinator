@@ -130,9 +130,10 @@ export async function updatePlan(formData: FormData): Promise<CreatePlanError | 
   }
 
   const cookieStore = await cookies();
-  // The settings page is owner-scoped so we route the auth-failure redirect
-  // through /plan/{planId}/settings — Plan 01-05's /auth/sign-in honors it.
-  const user = await getRequiredUser(cookieStore, '/plan');
+  // On auth failure, return the user to /me (their dashboard). We don't know
+  // the plan's slug here without an extra query, and /plan alone 404s. /me is
+  // the canonical landing for a signed-out owner.
+  const user = await getRequiredUser(cookieStore, '/me');
   const supabase = createServerClient(cookieStore);
 
   const startDate =
