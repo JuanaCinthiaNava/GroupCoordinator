@@ -1,0 +1,67 @@
+{
+  "version": "1.0",
+  "timestamp": "2026-05-25T18:29:15.659Z",
+  "phase": "01",
+  "phase_name": "spine-plan-lifecycle",
+  "phase_dir": ".planning/phases/01-spine-plan-lifecycle",
+  "plan": null,
+  "task": null,
+  "total_tasks": null,
+  "status": "phase_complete_ready_for_next",
+  "milestone_progress": "1/7 phases complete (14%)",
+  "next_phase": {
+    "number": "02",
+    "name": "itinerary",
+    "goal": "Cronological day-by-day timeline of plan items with places and notes",
+    "depends_on": ["01"],
+    "requirements": ["ITIN-01", "ITIN-02", "ITIN-03", "ITIN-04", "ITIN-05"],
+    "entry_command": "/gsd-discuss-phase 2"
+  },
+  "completed_tasks": [
+    {"id": "01-01", "name": "Bootstrap Next.js + Supabase + Drizzle + next-intl + shadcn + Biome", "status": "done", "commits": ["0ddce72", "8b94bd4", "a9ff0f4"]},
+    {"id": "01-02", "name": "Drizzle schema + RLS policies + Custom Access Token Hook + Supabase client triplet", "status": "done", "commits": ["c52ac2f", "ca342d1", "e8b0437", "c7474b4"]},
+    {"id": "01-03", "name": "Anonymous link-view: /i/[token] handler + anon JWT + Surface 3 plan view + security headers", "status": "done", "commits": ["8292dc2", "ec7a2b5", "b169672"]},
+    {"id": "01-04", "name": "Authenticated plan creation + ShareDialog (Surface 2) + OG image route", "status": "done", "commits": ["20fd5af", "eb9f040", "34e575f"]},
+    {"id": "01-05", "name": "OAuth callback + linkIdentity + sign-out + /me dashboard (Surface 7)", "status": "done", "commits": ["2a1fbe8", "93dcc05", "a4a4a70"]},
+    {"id": "01-06", "name": "Owner settings (Surface 6) — revoke + archive + 4-case visibility matrix", "status": "done", "commits": ["83899e4", "73cdb96", "bafbd4b"], "note": "SUMMARY.md reconstructed by orchestrator after executor API socket closure; code commits intact"}
+  ],
+  "remaining_tasks": [],
+  "blockers": [],
+  "human_actions_pending": [
+    {"action": "Manual Google OAuth round-trip in live browser", "context": "Auto-mode auto-approved checkpoint in Plans 01-05; not exercised against real Google", "blocking": false},
+    {"action": "WhatsApp OG preview crawler test", "context": "Plan 01-04 OG image route shipped; needs WhatsApp send-and-preview validation", "blocking": false},
+    {"action": "Live-DB integration suite via pnpm supabase start", "context": "Integration tests skip-cleanly without Supabase; full pass needs Docker + Supabase local stack", "blocking": false},
+    {"action": "webkit-mobile visual pass", "context": "Playwright webkit project deferred; only chromium-desktop has been exercised", "blocking": false},
+    {"action": "Manual revoke-then-paste flow", "context": "End-to-end token revocation verified at unit + integration + e2e level; manual smoke deferred to developer", "blocking": false}
+  ],
+  "decisions": [
+    {"decision": "Set up GitHub remote during Phase 1 execution (between Waves 1 and 2)", "rationale": "User asked mid-execution; better to have backup before continuing risky long-running work", "phase": "01"},
+    {"decision": "Reauthor all 20 prior commits with juana.nava@definityfirst.com via filter-branch", "rationale": "User wanted clean attribution; no commits had been pushed so destructive rewrite was safe", "phase": "01"},
+    {"decision": "Install gh CLI as standalone binary (~/.local/bin/gh) instead of Homebrew", "rationale": "Brew not installed; user picked the lighter path", "phase": "01"},
+    {"decision": "Create public GitHub repo (JuanaCinthiaNava/GroupCoordinator)", "rationale": "Explicit user authorization after Auto Mode classifier flagged the original generic 'Público' answer", "phase": "01"},
+    {"decision": "Orchestrator-reconstructed SUMMARY for Plan 01-06 from commit messages + diffs", "rationale": "Executor API socket closed before SUMMARY.md write; reconstruction was preferred over re-running the executor (would have re-done work already in commits)", "phase": "01"}
+  ],
+  "verification": {
+    "tsc_noEmit": "exit 0",
+    "test_unit": "14 files / 59 tests passed",
+    "build": "exit 0, 21 routes",
+    "verifier_verdict": "PASSES_WITH_FOLLOWUPS — 11/11 requirements SATISFIED, status=human_needed for 4 deferred manual checkpoints",
+    "verification_report": ".planning/phases/01-spine-plan-lifecycle/01-VERIFICATION.md"
+  },
+  "infrastructure": {
+    "git_remote": "https://github.com/JuanaCinthiaNava/GroupCoordinator.git",
+    "git_remote_visibility": "public",
+    "git_user_local": "Cinthia Nava <juana.nava@definityfirst.com>",
+    "gh_cli_path": "~/.local/bin/gh",
+    "gh_authenticated_as": "JuanaCinthiaNava",
+    "branch": "main",
+    "upstream": "origin/main",
+    "commits_ahead_or_behind": "in sync",
+    "uncommitted_files": [],
+    "active_worktrees": [],
+    "background_processes": []
+  },
+  "uncommitted_files": [],
+  "next_action": "Run /gsd-discuss-phase 2 to start gathering context for Phase 2 (Itinerary).",
+  "context_notes": "Phase 1 spine is whole and pushed. Next session can start Phase 2 from a clean state. 7 non-blocking followups recorded in 01-VERIFICATION.md for Phase 2/7 consideration (stale TODOs, PlanSignInSheet duplication, atomicity of createPlan via RPC, getMyPlans N+1, safeNext duplication, updatePlan redirect target, renameTokenSchema verification)."
+}
