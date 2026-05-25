@@ -1,14 +1,12 @@
-// App route group layout — sticky 56px header chrome. RSC.
+// App route group layout — minimal shell. RSC.
 //
-// Reads the current Supabase user once at layout level so the header can
-// render auth state without each child page re-fetching it. Per-page content
-// (plan title, hero) still belongs in the page itself; the layout just owns
-// the chrome.
+// Plan 01-04 moved PlanHeader rendering out of this layout so that
+// /plan/[slug] can mount a plan-aware header (plan title + member stack +
+// owner gear) while /plan/new can mount a simpler chrome. Each child page
+// (or its own layout) owns its header instance now. This keeps the layout
+// agnostic of per-page data.
 
-import { PlanHeader } from '@/components/plan/PlanHeader';
-import { createServerClient } from '@/lib/supabase/server';
 import { setRequestLocale } from 'next-intl/server';
-import { cookies, headers } from 'next/headers';
 
 export default async function AppLayout({
   children,
@@ -19,23 +17,5 @@ export default async function AppLayout({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-
-  const cookieStore = await cookies();
-  const supabase = createServerClient(cookieStore);
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const headerList = await headers();
-  // Best-effort current path for the next= sign-in redirect. Falls back to /me.
-  const currentPath = headerList.get('x-pathname') ?? headerList.get('referer') ?? '/me';
-
-  const userForHeader = user ? { id: user.id, isAnonymous: user.is_anonymous === true } : null;
-
-  return (
-    <div className="flex min-h-dvh flex-col bg-zinc-50">
-      <PlanHeader currentPath={currentPath} user={userForHeader} />
-      {children}
-    </div>
-  );
+  return <div className="flex min-h-dvh flex-col bg-zinc-50">{children}</div>;
 }
