@@ -1,53 +1,50 @@
 {
   "version": "1.0",
-  "timestamp": "2026-05-25T18:29:15.659Z",
-  "phase": "01",
-  "phase_name": "spine-plan-lifecycle",
-  "phase_dir": ".planning/phases/01-spine-plan-lifecycle",
+  "timestamp": "2026-05-25T19:22:50.896Z",
+  "phase": "02",
+  "phase_name": "itinerary",
+  "phase_dir": ".planning/phases/02-itinerary",
   "plan": null,
   "task": null,
   "total_tasks": null,
-  "status": "phase_complete_ready_for_next",
-  "milestone_progress": "1/7 phases complete (14%)",
-  "next_phase": {
-    "number": "02",
-    "name": "itinerary",
-    "goal": "Cronological day-by-day timeline of plan items with places and notes",
-    "depends_on": ["01"],
-    "requirements": ["ITIN-01", "ITIN-02", "ITIN-03", "ITIN-04", "ITIN-05"],
-    "entry_command": "/gsd-discuss-phase 2"
+  "status": "context_captured_ready_for_planning",
+  "milestone_progress": "1/7 phases complete (14%); Phase 2 discuss done",
+  "next_step": {
+    "primary": "/gsd-plan-phase 2",
+    "recommended_first": "/gsd-ui-phase 2",
+    "rationale": "Phase 2 (Itinerary) is a visible surface — the day-grouped timeline. Running ui-phase before plan-phase produces UI-SPEC.md that flows into the planner and locks visual contract before tasks are decomposed. Identical to Phase 1's sequence."
   },
-  "completed_tasks": [
-    {"id": "01-01", "name": "Bootstrap Next.js + Supabase + Drizzle + next-intl + shadcn + Biome", "status": "done", "commits": ["0ddce72", "8b94bd4", "a9ff0f4"]},
-    {"id": "01-02", "name": "Drizzle schema + RLS policies + Custom Access Token Hook + Supabase client triplet", "status": "done", "commits": ["c52ac2f", "ca342d1", "e8b0437", "c7474b4"]},
-    {"id": "01-03", "name": "Anonymous link-view: /i/[token] handler + anon JWT + Surface 3 plan view + security headers", "status": "done", "commits": ["8292dc2", "ec7a2b5", "b169672"]},
-    {"id": "01-04", "name": "Authenticated plan creation + ShareDialog (Surface 2) + OG image route", "status": "done", "commits": ["20fd5af", "eb9f040", "34e575f"]},
-    {"id": "01-05", "name": "OAuth callback + linkIdentity + sign-out + /me dashboard (Surface 7)", "status": "done", "commits": ["2a1fbe8", "93dcc05", "a4a4a70"]},
-    {"id": "01-06", "name": "Owner settings (Surface 6) — revoke + archive + 4-case visibility matrix", "status": "done", "commits": ["83899e4", "73cdb96", "bafbd4b"], "note": "SUMMARY.md reconstructed by orchestrator after executor API socket closure; code commits intact"}
+  "completed_this_session": [
+    {"id": "phase-01-followups", "name": "5 of 7 verification follow-ups fixed (1, 2, 5, 6, 7); 2 deferred to Phase 7 (3, 4)", "commits": ["d3dbae4", "76a8898", "f0cb28e", "f49f665"]},
+    {"id": "github-remote", "name": "GitHub remote set up — public repo JuanaCinthiaNava/GroupCoordinator, identity rewritten to Cinthia Nava <juana.nava@definityfirst.com>", "commits": ["all 53 prior commits reauthored via filter-branch"]},
+    {"id": "phase-02-context", "name": "Phase 2 (Itinerary) CONTEXT.md + DISCUSSION-LOG.md captured", "commits": ["6339e77", "68c8a44"]}
   ],
-  "remaining_tasks": [],
+  "phase_02_decisions": {
+    "summary": "14 decisions (D-24..D-37) covering item shape, RLS permissions, place coupling with Phase 3, day grouping, plan-level TZ, RSC + revalidatePath pattern",
+    "schema_additions": [
+      "ALTER TABLE plans ADD COLUMN timezone TEXT NOT NULL DEFAULT 'America/Mexico_City'",
+      "CREATE TYPE itinerary_category AS ENUM ('transport','food','activity','other')",
+      "CREATE TABLE itinerary_items (id, plan_id FK CASCADE, title 200, scheduled_at TIMESTAMPTZ NOT NULL, place_text NULL, notes TEXT NULL, category itinerary_category NULL, created_by FK auth.users, created_at, updated_at)"
+    ],
+    "key_locks": [
+      "Hard delete (no deleted_at — diverges from Phase 1 soft-delete pattern intentionally)",
+      "Wiki-open RLS: editor + owner can CRUD anyone's items",
+      "place_text dual-column with Phase 3 — no destructive migration",
+      "Plan-level TZ detected from browser at create",
+      "RSC + revalidatePath only — no TanStack Query, no Realtime in Phase 2",
+      "Rule-based category matcher (es/en/pt) — no LLM dependency"
+    ]
+  },
+  "remaining_phase_02_steps": [
+    {"step": "ui-phase", "command": "/gsd-ui-phase 2", "blocking": false, "rationale": "Recommended — visible Surface (timeline)"},
+    {"step": "plan-phase", "command": "/gsd-plan-phase 2", "blocking": true},
+    {"step": "execute-phase", "command": "/gsd-execute-phase 2", "blocking": true},
+    {"step": "verify", "command": "automatic at end of execute-phase or via /gsd-verify-work 2"}
+  ],
   "blockers": [],
   "human_actions_pending": [
-    {"action": "Manual Google OAuth round-trip in live browser", "context": "Auto-mode auto-approved checkpoint in Plans 01-05; not exercised against real Google", "blocking": false},
-    {"action": "WhatsApp OG preview crawler test", "context": "Plan 01-04 OG image route shipped; needs WhatsApp send-and-preview validation", "blocking": false},
-    {"action": "Live-DB integration suite via pnpm supabase start", "context": "Integration tests skip-cleanly without Supabase; full pass needs Docker + Supabase local stack", "blocking": false},
-    {"action": "webkit-mobile visual pass", "context": "Playwright webkit project deferred; only chromium-desktop has been exercised", "blocking": false},
-    {"action": "Manual revoke-then-paste flow", "context": "End-to-end token revocation verified at unit + integration + e2e level; manual smoke deferred to developer", "blocking": false}
+    {"action": "Phase 1 manual checkpoints still open (Google OAuth round-trip, WhatsApp OG, live-DB suite, webkit-mobile, revoke-then-paste)", "context": "Not blocking Phase 2 work; can be exercised any time before public launch", "blocking": false}
   ],
-  "decisions": [
-    {"decision": "Set up GitHub remote during Phase 1 execution (between Waves 1 and 2)", "rationale": "User asked mid-execution; better to have backup before continuing risky long-running work", "phase": "01"},
-    {"decision": "Reauthor all 20 prior commits with juana.nava@definityfirst.com via filter-branch", "rationale": "User wanted clean attribution; no commits had been pushed so destructive rewrite was safe", "phase": "01"},
-    {"decision": "Install gh CLI as standalone binary (~/.local/bin/gh) instead of Homebrew", "rationale": "Brew not installed; user picked the lighter path", "phase": "01"},
-    {"decision": "Create public GitHub repo (JuanaCinthiaNava/GroupCoordinator)", "rationale": "Explicit user authorization after Auto Mode classifier flagged the original generic 'Público' answer", "phase": "01"},
-    {"decision": "Orchestrator-reconstructed SUMMARY for Plan 01-06 from commit messages + diffs", "rationale": "Executor API socket closed before SUMMARY.md write; reconstruction was preferred over re-running the executor (would have re-done work already in commits)", "phase": "01"}
-  ],
-  "verification": {
-    "tsc_noEmit": "exit 0",
-    "test_unit": "14 files / 59 tests passed",
-    "build": "exit 0, 21 routes",
-    "verifier_verdict": "PASSES_WITH_FOLLOWUPS — 11/11 requirements SATISFIED, status=human_needed for 4 deferred manual checkpoints",
-    "verification_report": ".planning/phases/01-spine-plan-lifecycle/01-VERIFICATION.md"
-  },
   "infrastructure": {
     "git_remote": "https://github.com/JuanaCinthiaNava/GroupCoordinator.git",
     "git_remote_visibility": "public",
@@ -59,9 +56,12 @@
     "commits_ahead_or_behind": "in sync",
     "uncommitted_files": [],
     "active_worktrees": [],
-    "background_processes": []
+    "background_processes": [],
+    "node_modules_installed": true,
+    "supabase_local_running": false,
+    "docker_installed": false
   },
   "uncommitted_files": [],
-  "next_action": "Run /gsd-discuss-phase 2 to start gathering context for Phase 2 (Itinerary).",
-  "context_notes": "Phase 1 spine is whole and pushed. Next session can start Phase 2 from a clean state. 7 non-blocking followups recorded in 01-VERIFICATION.md for Phase 2/7 consideration (stale TODOs, PlanSignInSheet duplication, atomicity of createPlan via RPC, getMyPlans N+1, safeNext duplication, updatePlan redirect target, renameTokenSchema verification)."
+  "next_action": "Run /gsd-ui-phase 2 (Recommended — produces UI-SPEC.md for the timeline) then /gsd-plan-phase 2. Alternatively skip ui-phase and run /gsd-plan-phase 2 directly if you want planner to make UI calls.",
+  "context_notes": "Phase 2 context is fully captured. The user repeatedly chose the simpler 'Recommended' option in 12 sub-questions, signaling MVP-first bias. Honor that bias in planning: do NOT speculatively wire TanStack Query, do NOT pre-add category_confidence columns, do NOT pre-build an undo buffer for deletes. The wiki-open RLS + hard delete combo is intentionally simpler than Phase 1's patterns. Phase 3 (Map & Places) is explicitly coupled — Phase 2 schema has place_text NULL, Phase 3 adds place_id sibling column."
 }
