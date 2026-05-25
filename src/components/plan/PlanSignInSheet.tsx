@@ -1,81 +1,38 @@
 'use client';
 
-// Surface 5 — Sign-in bottom sheet. Initiates Supabase Google OAuth via
-// signInWithOAuth from the browser client. /auth/callback completes the
-// upgrade (exchangeCodeForSession + plan_members upsert + redirect to next).
+// Surface 5 — Sign-in bottom sheet, opened inline from /plan/[slug] when an
+// anonymous guest taps the "Iniciar sesión" CTA on the sign-in affordance bar.
+//
+// The sheet's content is shared with /auth/sign-in via SignInSheetBody —
+// both surfaces render the same Google CTA, account_exists recovery banner,
+// privacy line, and guest affordance. This wrapper only owns the open/close
+// semantics (Sheet primitive + dismiss → call onOpenChange(false)).
 
-import { Button } from '@/components/ui/button';
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from '@/components/ui/sheet';
-import { getBrowserClient } from '@/lib/supabase/browser';
-import { useTranslations } from 'next-intl';
+import { SignInSheetBody } from '@/components/auth/SignInSheetBody';
+import { Sheet, SheetContent } from '@/components/ui/sheet';
 
 export interface PlanSignInSheetProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   nextPath: string;
+  /** Recovery state when the user was bounced back here by /auth/callback. */
+  initialError?: string;
 }
 
-export function PlanSignInSheet({ open, onOpenChange, nextPath }: PlanSignInSheetProps) {
-  const t = useTranslations();
-
-  async function handleGoogle() {
-    const supabase = getBrowserClient();
-    const origin = typeof window !== 'undefined' ? window.location.origin : '';
-    await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${origin}/auth/callback?next=${encodeURIComponent(nextPath)}`,
-        queryParams: { prompt: 'select_account' },
-      },
-    });
-  }
-
+export function PlanSignInSheet({
+  open,
+  onOpenChange,
+  nextPath,
+  initialError,
+}: PlanSignInSheetProps) {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="bottom" className="px-6 pb-8 pt-4">
-        <SheetHeader>
-          <SheetTitle>{t('auth.sign_in_sheet_title')}</SheetTitle>
-          <SheetDescription>{t('auth.sign_in_descriptor')}</SheetDescription>
-        </SheetHeader>
-        <div className="mt-6">
-          <Button
-            type="button"
-            onClick={handleGoogle}
-            className="h-[52px] w-full bg-emerald-700 text-base font-semibold text-white hover:bg-emerald-800"
-          >
-            {t('auth.google_button')}
-          </Button>
-        </div>
-        <p className="mt-4 text-center text-sm text-zinc-400">
-          {t.rich('auth.privacy_line', {
-            terms: (chunks) => (
-              // TODO(Phase 7): wire legal pages /legal/terms + /legal/privacy.
-              <a href="/legal/terms" className="text-zinc-500 underline-offset-2 hover:underline">
-                {chunks}
-              </a>
-            ),
-            privacy: (chunks) => (
-              <a href="/legal/privacy" className="text-zinc-500 underline-offset-2 hover:underline">
-                {chunks}
-              </a>
-            ),
-          })}
-        </p>
-        <div className="mt-3 text-center">
-          <button
-            type="button"
-            onClick={() => onOpenChange(false)}
-            className="text-sm text-zinc-500 underline-offset-2 hover:underline"
-          >
-            {t('auth.continue_as_guest')}
-          </button>
-        </div>
+        <SignInSheetBody
+          nextPath={nextPath}
+          initialError={initialError}
+          onGuest={() => onOpenChange(false)}
+        />
       </SheetContent>
     </Sheet>
   );
