@@ -111,7 +111,7 @@
     "plan_not_found_sub": "Pídele al organizador un link actualizado.",
     "token_invalid": "Este link de invitación no es válido.",
     "token_revoked": "Este link fue revocado. Pídele al organizador uno nuevo.",
-    "token_expired": "Este link de invitación expiró.",
+    "token_expired": "Este link expiró. Pídele al organizador uno nuevo.",
     "unauthorized": "Necesitas iniciar sesión para ver esto.",
     "server_error": "Algo salió mal. Inténtalo en un momento.",
     "auth_error": "Hubo un problema al iniciar sesión. Inténtalo de nuevo."

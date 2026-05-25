@@ -41,7 +41,7 @@ export interface PlanMemberRow {
  */
 export async function getPlanBySlug(
   supabase: SupabaseClient,
-  slug: string,
+  slug: string
 ): Promise<PlanRow | null> {
   const { data, error } = await supabase
     .from('plans')
@@ -56,22 +56,12 @@ export async function getPlanBySlug(
  * Plans the user owns OR is a member of. RLS does the actual filtering;
  * we additionally scope by owner_id OR membership for clarity in pgAdmin.
  */
-export async function getMyPlans(
-  supabase: SupabaseClient,
-  userId: string,
-): Promise<PlanRow[]> {
+export async function getMyPlans(supabase: SupabaseClient, userId: string): Promise<PlanRow[]> {
   // Two queries (owner + member) merged client-side to avoid a SQL UNION
   // that the Supabase JS SDK does not express ergonomically.
   const [ownerResult, memberResult] = await Promise.all([
-    supabase
-      .from('plans')
-      .select('*')
-      .eq('owner_id', userId)
-      .is('archived_at', null),
-    supabase
-      .from('plan_members')
-      .select('plan_id, plans!inner(*)')
-      .eq('user_id', userId),
+    supabase.from('plans').select('*').eq('owner_id', userId).is('archived_at', null),
+    supabase.from('plan_members').select('plan_id, plans!inner(*)').eq('user_id', userId),
   ]);
   if (ownerResult.error) throw ownerResult.error;
   if (memberResult.error) throw memberResult.error;
@@ -102,7 +92,7 @@ export async function getMyPlans(
  */
 export async function getPlanMembers(
   supabase: SupabaseClient,
-  planId: string,
+  planId: string
 ): Promise<PlanMemberRow[]> {
   const { data, error } = await supabase
     .from('plan_members')
