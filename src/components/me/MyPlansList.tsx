@@ -19,12 +19,7 @@ export function MyPlansList({ plans, locale }: MyPlansListProps) {
   return (
     <ul className="space-y-3 px-4 md:grid md:grid-cols-2 md:gap-4 md:space-y-0 lg:mx-auto lg:max-w-[1024px] lg:grid-cols-3">
       {plans.map((plan) => (
-        <PlanCard
-          key={plan.id}
-          plan={plan}
-          locale={locale}
-          isActive={plan.id === activeId}
-        />
+        <PlanCard key={plan.id} plan={plan} locale={locale} isActive={plan.id === activeId} />
       ))}
     </ul>
   );

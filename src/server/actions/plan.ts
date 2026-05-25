@@ -25,7 +25,8 @@
 import { generateSlug } from '@/lib/auth/invite-token';
 import { getRequiredUser } from '@/lib/auth/require-user';
 import { createServerClient } from '@/lib/supabase/server';
-import { createPlanSchema } from '@/lib/validation/plan';
+import { archivePlanSchema, createPlanSchema, updatePlanSchema } from '@/lib/validation/plan';
+import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { mintInviteTokenInternal } from './invite-token';
@@ -107,14 +108,112 @@ export async function createPlan(formData: FormData): Promise<CreatePlanError | 
   redirect(`/plan/${plan.slug}?share=1`);
 }
 
-// PLAN-02 stub: implemented in Plan 01-06 — not yet implemented.
-export async function updatePlan(_planId: string, _formData: FormData): Promise<never> {
-  // implemented in Plan 01-06 — not yet implemented
-  throw new Error('updatePlan: not yet implemented — Plan 01-06');
+/**
+ * PLAN-02: Edit plan details from Surface 6 — title, dates, description.
+ *
+ * Auth: owner only — RLS plans_update_owner_only enforces. Non-owners hit a
+ * zero-rows-updated result and we surface a generic error.
+ * Returns { error } on validation failure or RLS-blocked update; otherwise
+ * revalidates /plan/[slug] + /me and returns void.
+ */
+export async function updatePlan(formData: FormData): Promise<CreatePlanError | undefined> {
+  const raw = {
+    planId: (formData.get('planId') ?? '').toString(),
+    title: (formData.get('title') ?? '').toString(),
+    startDate: ((formData.get('startDate') ?? '') as string) || undefined,
+    endDate: ((formData.get('endDate') ?? '') as string) || undefined,
+    description: ((formData.get('description') ?? '') as string) || undefined,
+  };
+  const parsed = updatePlanSchema.safeParse(raw);
+  if (!parsed.success) {
+    return { error: parsed.error.flatten() };
+  }
+
+  const cookieStore = await cookies();
+  // The settings page is owner-scoped so we route the auth-failure redirect
+  // through /plan/{planId}/settings — Plan 01-05's /auth/sign-in honors it.
+  const user = await getRequiredUser(cookieStore, '/plan');
+  const supabase = createServerClient(cookieStore);
+
+  const startDate =
+    parsed.data.startDate && parsed.data.startDate !== '' ? parsed.data.startDate : null;
+  const endDate = parsed.data.endDate && parsed.data.endDate !== '' ? parsed.data.endDate : null;
+  const description =
+    parsed.data.description && parsed.data.description !== '' ? parsed.data.description : null;
+
+  const result = await supabase
+    .from('plans')
+    .update({
+      title: parsed.data.title,
+      description,
+      start_date: startDate,
+      end_date: endDate,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', parsed.data.planId)
+    .select('slug')
+    .maybeSingle<{ slug: string }>();
+
+  if (result.error) {
+    return { error: { message: result.error.message } };
+  }
+  if (!result.data) {
+    // RLS blocked the update — caller isn't the owner (or plan doesn't exist).
+    // Use a generic error to avoid leaking existence.
+    return { error: { message: 'plan_update_forbidden' } };
+  }
+
+  // Track the authenticated edit (no functional dependency on user.id —
+  // RLS already enforced ownership). Reference to keep biome happy.
+  void user.id;
+
+  revalidatePath(`/plan/${result.data.slug}`);
+  revalidatePath(`/plan/${result.data.slug}/settings`);
+  revalidatePath('/me');
 }
 
-// PLAN-05 stub: implemented in Plan 01-06 — not yet implemented.
-export async function archivePlan(_planId: string): Promise<never> {
-  // implemented in Plan 01-06 — not yet implemented
-  throw new Error('archivePlan: not yet implemented — Plan 01-06');
+/**
+ * PLAN-05: D-05 soft-delete plan. The Surface 6 "Eliminar plan" button is the
+ * same code path as "Archivar plan" — both set archived_at = now() (RESEARCH
+ * §Open Question 5).
+ *
+ * Auth: owner only — RLS plans_update_owner_only enforces. Redirects to /me
+ * after success so the owner lands on the dashboard with the archived plan
+ * already filtered out (Plan 01-05's getMyPlans uses archived_at IS NULL).
+ */
+export async function archivePlan(formData: FormData): Promise<CreatePlanError | never> {
+  const raw = { planId: (formData.get('planId') ?? '').toString() };
+  const parsed = archivePlanSchema.safeParse(raw);
+  if (!parsed.success) {
+    return { error: parsed.error.flatten() };
+  }
+
+  const cookieStore = await cookies();
+  const user = await getRequiredUser(cookieStore, '/me');
+  const supabase = createServerClient(cookieStore);
+
+  const result = await supabase
+    .from('plans')
+    .update({
+      archived_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', parsed.data.planId)
+    .select('slug')
+    .maybeSingle<{ slug: string }>();
+
+  if (result.error) {
+    return { error: { message: result.error.message } };
+  }
+  if (!result.data) {
+    // RLS blocked the update — non-owner or non-existent plan.
+    return { error: { message: 'plan_archive_forbidden' } };
+  }
+
+  void user.id; // see updatePlan for rationale
+
+  revalidatePath('/me');
+  revalidatePath(`/plan/${result.data.slug}`);
+  revalidatePath(`/plan/${result.data.slug}/settings`);
+  redirect('/me');
 }

@@ -10,10 +10,10 @@
 //   - Composed aria-label aggregates title + dates + member count + relative time
 
 import { Badge } from '@/components/ui/badge';
+import type { MyPlansRow } from '@/lib/db/queries/my-plans';
 import { Link as LinkIcon, Users } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import type { MyPlansRow } from '@/lib/db/queries/my-plans';
 
 export interface PlanCardProps {
   plan: MyPlansRow;
@@ -21,11 +21,7 @@ export interface PlanCardProps {
   isActive: boolean;
 }
 
-function formatDateRange(
-  start: string | null,
-  end: string | null,
-  locale: string
-): string | null {
+function formatDateRange(start: string | null, end: string | null, locale: string): string | null {
   if (!start && !end) return null;
   const fmt = new Intl.DateTimeFormat(locale, { day: '2-digit', month: 'short' });
   if (start && end) {
