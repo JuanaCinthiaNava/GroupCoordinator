@@ -33,8 +33,8 @@ Spine-first, then four parallelizable surfaces, then findability trinity (the we
   3. A guest opening the invite link in WhatsApp/iMessage sees the plan title and member list as a read-only view without creating an account
   4. The plan owner can revoke the invite link (regenerate) so a freshly-pasted old link 404s, and can archive or delete the plan
   5. A guest who taps "sign in to edit/vote" completes OAuth and lands back on the plan with their anonymous session upgraded (no context loss), and signed-in users see a list of all plans they belong to
-**Plans:** 6 plans
-  - [ ] 01-01-PLAN.md — Bootstrap Next.js + Supabase + Drizzle + next-intl + shadcn + Biome + Vitest + Playwright scaffold (Walking Skeleton; produces 01-SKELETON.md)
+**Plans:** 1/6 plans executed
+  - [x] 01-01-PLAN.md — Bootstrap Next.js + Supabase + Drizzle + next-intl + shadcn + Biome + Vitest + Playwright scaffold (Walking Skeleton; produces 01-SKELETON.md)
   - [ ] 01-02-PLAN.md — Database schema + RLS policies + Custom Access Token Hook + Supabase client triplet + invite-token utilities + seed data
   - [ ] 01-03-PLAN.md — Anonymous link view: /api/invite/[token] handler + plan view RSC + Surface 3 components + security headers + rate limit
   - [ ] 01-04-PLAN.md — Plan create + share dialog + OG image + Server Actions; closes PLAN-01, PLAN-02, AUTH-06
@@ -125,7 +125,7 @@ Spine-first, then four parallelizable surfaces, then findability trinity (the we
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Spine & Plan Lifecycle | 0/6 | Planned | - |
+| 1. Spine & Plan Lifecycle | 1/6 | In Progress|  |
 | 2. Itinerary | 0/0 | Not started | - |
 | 3. Map & Places | 0/0 | Not started | - |
 | 4. Voting & Decisions | 0/0 | Not started | - |
