@@ -12,7 +12,7 @@ Spine-first, then four parallelizable surfaces, then findability trinity (the we
 
 ## Phases
 
-- [ ] **Phase 1: Spine & Plan Lifecycle** — Hybrid auth, invite tokens, RLS, and a minimal create-and-share plan loop end-to-end
+- [x] **Phase 1: Spine & Plan Lifecycle** — Hybrid auth, invite tokens, RLS, and a minimal create-and-share plan loop end-to-end (completed 2026-05-25)
 - [ ] **Phase 2: Itinerary** — Cronological day-by-day timeline of plan items with places and notes
 - [ ] **Phase 3: Map & Places** — Shared map of saved places with deep-link to native maps apps
 - [ ] **Phase 4: Voting & Decisions** — Group polls with options, votes, and explicit closure
@@ -33,13 +33,13 @@ Spine-first, then four parallelizable surfaces, then findability trinity (the we
   3. A guest opening the invite link in WhatsApp/iMessage sees the plan title and member list as a read-only view without creating an account
   4. The plan owner can revoke the invite link (regenerate) so a freshly-pasted old link 404s, and can archive or delete the plan
   5. A guest who taps "sign in to edit/vote" completes OAuth and lands back on the plan with their anonymous session upgraded (no context loss), and signed-in users see a list of all plans they belong to
-**Plans:** 5/6 plans executed
+**Plans:** 6/6 plans complete
   - [x] 01-01-PLAN.md — Bootstrap Next.js + Supabase + Drizzle + next-intl + shadcn + Biome + Vitest + Playwright scaffold (Walking Skeleton; produces 01-SKELETON.md)
   - [x] 01-02-PLAN.md — Database schema + RLS policies + Custom Access Token Hook + Supabase client triplet + invite-token utilities + seed data
   - [x] 01-03-PLAN.md — Anonymous link view: /api/invite/[token] handler + plan view RSC + Surface 3 components + security headers + rate limit
   - [x] 01-04-PLAN.md — Plan create + share dialog + OG image + Server Actions; closes PLAN-01, PLAN-02, AUTH-06
   - [x] 01-05-PLAN.md — OAuth callback + sign-in (Surface 5) + /me dashboard (Surface 7); closes AUTH-02, AUTH-04, AUTH-05, PLAN-06
-  - [ ] 01-06-PLAN.md — Plan settings (Surface 6) + token revoke + plan archive; closes PLAN-04, PLAN-05
+  - [x] 01-06-PLAN.md — Plan settings (Surface 6) + token revoke + plan archive; closes PLAN-04, PLAN-05
 **UI hint:** yes
 
 ### Phase 2: Itinerary
@@ -125,7 +125,7 @@ Spine-first, then four parallelizable surfaces, then findability trinity (the we
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Spine & Plan Lifecycle | 5/6 | In Progress|  |
+| 1. Spine & Plan Lifecycle | 6/6 | Complete   | 2026-05-25 |
 | 2. Itinerary | 0/0 | Not started | - |
 | 3. Map & Places | 0/0 | Not started | - |
 | 4. Voting & Decisions | 0/0 | Not started | - |
