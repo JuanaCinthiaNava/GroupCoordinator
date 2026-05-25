@@ -1,0 +1,119 @@
+{
+  "common": {
+    "cancel": "Cancelar",
+    "save": "Guardar cambios",
+    "close": "Cerrar",
+    "back": "Volver",
+    "loading": "Cargando…",
+    "error_generic": "Ocurrió un error. Inténtalo de nuevo.",
+    "copied": "¡Link copiado!"
+  },
+  "nav": {
+    "my_plans": "Mis planes",
+    "sign_in": "Iniciar sesión",
+    "sign_out": "Cerrar sesión",
+    "plan_settings": "Configuración del plan",
+    "skip_to_content": "Ir al contenido principal"
+  },
+  "logo": {
+    "wordmark": "GroupCoordinator",
+    "chip": "GC"
+  },
+  "landing": {
+    "tagline": "Nunca más pierdas la reserva en el chat del grupo.",
+    "sub_tagline": "Un plan. Un link. Todo el grupo al tanto.",
+    "cta_create": "Crear un plan gratis",
+    "footer": "GroupCoordinator · 2026"
+  },
+  "plan": {
+    "create": {
+      "page_title": "Nuevo plan",
+      "field_title_label": "Título del plan",
+      "field_title_placeholder": "Ej: Despedida de Carlos en Cádiz",
+      "field_title_required": "El título del plan es obligatorio.",
+      "collapsible_trigger": "Agregar fechas y descripción",
+      "field_start_date_label": "Fecha de inicio",
+      "field_end_date_label": "Fecha de fin",
+      "field_dates_helper": "Opcional",
+      "field_description_label": "Descripción",
+      "field_description_placeholder": "Cuéntale al grupo de qué va este plan…",
+      "field_description_helper": "Opcional",
+      "submit": "Crear plan",
+      "error_server": "Ocurrió un error al crear el plan. Inténtalo de nuevo."
+    },
+    "share_dialog": {
+      "title": "¡Plan creado! Compártelo con el grupo",
+      "share_via": "Compartir vía…",
+      "copy_link": "Copiar link",
+      "channel_hint": "Pega este link en WhatsApp, iMessage, Telegram o donde prefieras.",
+      "go_to_plan": "Ir al plan"
+    },
+    "view": {
+      "created_by": "Creado por {name}",
+      "members_section": "Participantes ({count})",
+      "members_overflow": "+{count} más",
+      "empty_heading": "{Creator} sigue agregando detalles. Vuelve pronto.",
+      "empty_sub": "Cuando el plan esté listo, lo verás aquí.",
+      "sign_in_prompt": "Inicia sesión para editar y votar",
+      "sign_in_cta": "Continuar con Google",
+      "powered_by": "Powered by GroupCoordinator"
+    },
+    "settings": {
+      "page_title": "Configuración",
+      "section_details": "Detalles del plan",
+      "section_invites": "Links de invitación",
+      "invites_active": "Links activos ({count})",
+      "generate_link": "+ Generar nuevo link",
+      "token_created": "Creado: {date}",
+      "token_used": "Usado {count} veces",
+      "token_default_name": "Link {number}",
+      "token_revoke": "Revocar link",
+      "token_revoke_confirm_copy": "¿Revocar este link? Los visitantes actuales pueden seguir viendo el plan.",
+      "token_revoke_confirm_action": "Revocar link",
+      "section_status": "Estado del plan",
+      "archive_button": "Archivar plan",
+      "archive_dialog_title": "¿Archivar este plan?",
+      "archive_dialog_copy": "Podrás encontrarlo en tu lista de planes archivados.",
+      "archive_confirm": "Archivar",
+      "delete_button": "Eliminar plan",
+      "delete_dialog_title": "¿Eliminar este plan?",
+      "delete_dialog_copy": "Esta acción archivará el plan. Puedes recuperarlo contactándonos.",
+      "delete_confirm": "Eliminar"
+    }
+  },
+  "me": {
+    "page_title": "Mis planes",
+    "create_cta": "Crear plan",
+    "create_first": "Crear mi primer plan",
+    "empty_heading": "Todavía no tienes ningún plan.",
+    "empty_sub": "Crea uno y compártelo con tu grupo.",
+    "role_owner": "Organizador",
+    "updated_at": "Actualizado {date}",
+    "member_count": "{count} participantes"
+  },
+  "auth": {
+    "sign_in_sheet_title": "Inicia sesión para participar",
+    "sign_in_descriptor": "Necesitas una cuenta para editar el plan, votar y colaborar con el grupo.",
+    "google_button": "Continuar con Google",
+    "privacy_line": "Al continuar aceptas nuestros {terms} y {privacy}.",
+    "terms_link": "Términos de uso",
+    "privacy_link": "Política de privacidad",
+    "continue_as_guest": "Seguir como visitante",
+    "redirecting": "Redirigiendo a Google…",
+    "error_account_exists": "Esa cuenta ya está en uso. Inicia sesión y reabre el link."
+  },
+  "og": {
+    "plan_created_by": "Creado por {name}",
+    "wordmark": "GroupCoordinator"
+  },
+  "errors": {
+    "plan_not_found": "Este plan no existe o el link expiró.",
+    "plan_not_found_sub": "Pídele al organizador un link actualizado.",
+    "token_invalid": "Este link de invitación no es válido.",
+    "token_revoked": "Este link fue revocado. Pídele al organizador uno nuevo.",
+    "token_expired": "Este link de invitación expiró.",
+    "unauthorized": "Necesitas iniciar sesión para ver esto.",
+    "server_error": "Algo salió mal. Inténtalo en un momento.",
+    "auth_error": "Hubo un problema al iniciar sesión. Inténtalo de nuevo."
+  }
+}
