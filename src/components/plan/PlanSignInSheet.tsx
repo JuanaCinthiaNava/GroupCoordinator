@@ -1,9 +1,8 @@
 'use client';
 
 // Surface 5 — Sign-in bottom sheet. Initiates Supabase Google OAuth via
-// signInWithOAuth from the browser client. The /auth/callback handler is
-// Plan 01-05's responsibility — until that ships, users land on a 404 after
-// authenticating with Google. Documented as a TODO below.
+// signInWithOAuth from the browser client. /auth/callback completes the
+// upgrade (exchangeCodeForSession + plan_members upsert + redirect to next).
 
 import { Button } from '@/components/ui/button';
 import {
@@ -26,9 +25,6 @@ export function PlanSignInSheet({ open, onOpenChange, nextPath }: PlanSignInShee
   const t = useTranslations();
 
   async function handleGoogle() {
-    // TODO(Plan 01-05): /auth/callback does not exist yet — users will see a
-    // 404 after Google completes the OAuth round-trip. Plan 01-05 wires the
-    // callback to exchangeCodeForSession + plan_members upsert + redirect.
     const supabase = getBrowserClient();
     const origin = typeof window !== 'undefined' ? window.location.origin : '';
     await supabase.auth.signInWithOAuth({

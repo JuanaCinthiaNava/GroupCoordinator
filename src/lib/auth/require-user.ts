@@ -3,8 +3,8 @@
 // CONTRACT:
 // - Server-side only. Reads the current Supabase user via the RLS-bound server
 //   client. If no user OR the user is anonymous (is_anonymous === true), calls
-//   Next.js `redirect()` to /auth/sign-in?next=… — Plan 01-05 ships that route;
-//   until then the redirect lands on a 404 (documented and acceptable).
+//   Next.js `redirect()` to /auth/sign-in?next=… (handled by the OAuth flow in
+//   src/app/[locale]/auth/sign-in + src/app/auth/callback).
 // - Returns the resolved authenticated user record so the caller can read
 //   user.id, user.email, etc. without re-fetching.
 //
@@ -27,7 +27,6 @@ export async function getRequiredUser(
   } = await supabase.auth.getUser();
 
   if (!user || user.is_anonymous === true) {
-    // TODO(Plan 01-05): /auth/sign-in route lands; until then this 404s.
     redirect(`/auth/sign-in?next=${encodeURIComponent(nextPath)}`);
   }
 
